@@ -267,7 +267,7 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
           obj.online = true;
           obj.lastSeen = Date.now();
 
-          await redisClient.set(key, JSON.stringify(obj), { EX: 60 });
+          await redisClient.set(key, JSON.stringify(obj), { EX: 86400 });
         });
 
         socket.on("app_state", async ({ state }) => {
@@ -287,7 +287,7 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
           obj.appState = state;
           obj.lastSeen = Date.now();
 
-          await redisClient.set(key, JSON.stringify(obj), { EX: 60 });
+          await redisClient.set(key, JSON.stringify(obj), { EX: 86400 });
         });
 
         socket.on("disconnect", () => {
@@ -318,7 +318,7 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
             obj.socketId = null;
             obj.lastSeen = Date.now();
 
-            await redisClient.set(key, JSON.stringify(obj), { EX: 60 });
+            await redisClient.set(key, JSON.stringify(obj), { EX: 86400 });
           }, 30000);
         });
 
