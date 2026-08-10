@@ -191,6 +191,7 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
         socket.on("chat_accepted_astrologer", (data) => {
           try {
             logEvent("chat_accepted_astrologer", data);
+            console.log("chat_accepted_astrologer",data);
             if (!data.room_id) return;
             publish(pubClient, "chat_status", {
               message: `Your astrologer has accepted your chat request! Room ID: ${data.room_id}`,
