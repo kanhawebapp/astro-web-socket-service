@@ -197,6 +197,8 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
               message: `Your astrologer has accepted your chat request! Room ID: ${data.room_id}`,
               status: "Accepted",
               roomid: String(data.room_id),
+              astroId:String(data.astroId),
+              userId:String(data.userId),
               who: "astrologer",
             });
           } catch (err) {
