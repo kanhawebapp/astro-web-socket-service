@@ -333,6 +333,7 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
               message: "Your astrologer has rejected your chat request!",
               status: "rejected",
               roomid: String(data.room_id),
+              astroId:String(data.astro_id),
               who: "astrologer",
             });
           } catch (err) {
