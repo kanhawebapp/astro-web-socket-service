@@ -47,6 +47,15 @@ const redisHandlers = (io) => ({
       roomid: String(data.roomId),
     });
   },
+
+  chat_cancel_by_admin: (data) => {
+    io.emit("chat_cancel_by_admin", {
+      message: `${data.message} `,
+      status: "rejected",
+      roomid: String(data.roomId),
+    });
+  },
+
   call_start: (data) => {
     io.emit("incoming_call", {
       room_id: data.room_id,
@@ -151,6 +160,7 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
       "customer_recharge_completed",
       "customer_recharge_fail",
       "chat_cancel_by_user",
+      "chat_cancel_by_admin",
 
       // CALL
       "call_start",
