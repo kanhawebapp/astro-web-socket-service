@@ -285,7 +285,7 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
 
         socket.on("app_state", async ({ state }) => {
           const astrologerId = socket.data.astrologerId;
-          console.log("----------CCCCCCCCCCCCC app_state---------",state);
+          console.log("---------- app_state---------",state);
 
           if (!astrologerId) return;
 
