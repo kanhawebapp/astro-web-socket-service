@@ -20,7 +20,6 @@ function publish(pubClient, channel, payload) {
 
 function logEvent(event, data) {
   const ts = DateTime.now().toFormat("yyyy-MM-dd HH:mm:ss");
-  console.log(`[${ts}][${event}]`, data);
 }
 // ===== Redis Channel Handlers =====
 const redisHandlers = (io) => ({
@@ -201,7 +200,6 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
         socket.on("chat_accepted_astrologer", (data) => {
           try {
             logEvent("chat_accepted_astrologer", data);
-            console.log("chat_accepted_astrologer",data);
             if (!data.room_id) return;
             publish(pubClient, "chat_status", {
               message: `Your astrologer has accepted your chat request! Room ID: ${data.room_id}`,
@@ -218,13 +216,11 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
 
         socket.on("register", async ({ astrologerId, playerId }) => {
           try {
-            console.log(astrologerId,"------AAAAAAAAAA register---------",playerId);
             socket.data.astrologerId = astrologerId;
 
             const key = `presence:astro:${astrologerId}`;
 
             const presence = await redisClient.get(key);
-             console.log(astrologerId,"------BBBBBBB register---------",presence);
             let obj = presence ? JSON.parse(presence) : {};
 
             //----- If another socket is already connected, disconnect it---//
@@ -245,7 +241,6 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
             //   }
             // }
 
-           console.log("socketid-----:"+socket.id+"-----playerId------"+playerId);
             obj.socketId = socket.id;
             obj.online = true;
             obj.playerId = playerId;
@@ -304,7 +299,6 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
         });
 
         socket.on("disconnect", () => {
-          console.log("------------DDDDDDDDDDDDDD disconnect--------");
           const astrologerId = socket.data.astrologerId;
           console.log("------------DDDDDDDDDDDDDD disconnect------astrologerId--",astrologerId);
 
@@ -405,7 +399,6 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
         // Complete chat
         socket.on("complted_chat", async (data) => {
           try {
-            console.log("----------------END CHAT BY ASTROLOGER--:", data);
             logEvent("complted_chat", data);
             socket.broadcast.to(data.room_id).emit("complted_chat", {
               message: `User has left the ${data.room_id} chat.`,
@@ -431,7 +424,6 @@ async function socketHandler(io, pubClient, subClient, redisClient) {
 
         socket.on("autodisconnect", async (data) => {
           try {
-            console.log("[Socket Event] autodisconnect", data);
             let roomId = data.room_id;
             socket.to(roomId).emit("user_disconnected", {
               message: "A user has left the chat.",
